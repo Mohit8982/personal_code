@@ -1,0 +1,926 @@
+<% layout('./layout') %>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <div class="ib-task-page-board">
+        <div id="ibBoardBody" class="ib-board-body">
+            <div class="ib-scrollable-board-body ib-board-body-scrollable-horizontal">
+                <div class="ib-board-body-columns">
+                    <div class="ib-bb-column-sortable-list">
+                        <div id="initial_stages" class="ib-sortable-list-icontainer ib-sortable-list-icontainer-row">
+                        </div>
+                        <div id="other_stages" class="ib-sortable-list-icontainer ib-sortable-list-icontainer-row">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- idea Approved after modal -->
+    <div class="modal common-modal fade" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered ib-modal-dialog" role="document">
+            <div class="modal-content ib-modal-content">
+                <div class="ib-mm-container" id="data_after">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending idea modal -->
+    <div class="modal add-new-idea-modal fade" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered display-webkit-box ib-modal-dialog" role="document">
+            <div class="modal-content ib-modal-content">
+                <div class="ib-mm-container">
+                    <div class="ib-mm-inner-container">
+                        <div class="ib-modal-header ib-modal-header-shadow">
+                            <div class="ib-header-toolbar ib-header-toolbar-spreadsheet">
+                                <div class="ib-header-title">
+                                    <div class="ib-header-title-row">
+                                        <div class="ib-header-title-row-status ib-visibility-off d-none">
+                                            <svg class="circle-check-icon circle-check-icon-small circle-check-icon-small-task-completion-icon circle-check-icon-small-incompleted" focusable="false" viewBox="0 0 32 32"><!-- circle-check-icon-small-completed  -->
+                                            <path d="M31,16c0,8.3-6.7,15-15,15S1,24.3,1,16S7.7,1,16,1S31,7.7,31,16z" class="compound-icon-outer"></path>
+                                            <path d="M13.4,22.1c-0.3,0-0.5-0.1-0.7-0.3l-3.9-3.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l3.1,3.1l8.1-8.1c0.4-0.4,1-0.4,1.4,0   s0.4,1,0,1.4l-8.9,8.9C13.9,22,13.7,22.1,13.4,22.1z" class="compound-icon-inner"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="ib-header-title-row-text">Welcome to Idea Bank!</div>
+                                    </div>
+                                </div>
+                                <div class="btn-group">
+                                    <div class="common-btn-group">
+                                        <span class="ib-btn ib-primary-btn" onclick="acceptDec(1)">Accept</span>
+                                        <span class="ib-btn ib-secondary-btn" onclick="acceptDec(2)">Decline</span>
+                                    </div>
+                                </div>
+                                <span class="ib-modal-closer ib-modal-closer-style">
+                                    <svg class="ib-modal-closer-icon" focusable="false" viewBox="0 0 32 32">
+                                    <path d="M19,32c-3.9,0-7-3.1-7-7V10c0-2.2,1.8-4,4-4s4,1.8,4,4v9c0,0.6-0.4,1-1,1s-1-0.4-1-1v-9c0-1.1-0.9-2-2-2s-2,0.9-2,2v15c0,2.8,2.2,5,5,5s5-2.2,5-5V10c0-4.4-3.6-8-8-8s-8,3.6-8,8v5c0,0.6-0.4,1-1,1s-1-0.4-1-1v-5C6,4.5,10.5,0,16,0s10,4.5,10,10v15C26,28.9,22.9,32,19,32z"></path>
+                                    </svg>
+                                </span>
+                                <span class="ib-modal-closer ib-modal-closer-style" data-dismiss="modal" aria-label="Close">
+                                    <svg class="ib-modal-closer-icon" focusable="false" viewBox="0 0 24 24">
+                                    <path d="M14.5,12l6-6C20.8,5.7,21,5.2,21,4.8s-0.2-0.9-0.5-1.2C20.1,3.2,19.7,3,19.2,3S18.3,3.2,18,3.5l-6,6l-6-6 C5.7,3.2,5.2,3,4.8,3S3.9,3.2,3.5,3.5C3.2,3.9,3,4.3,3,4.8S3.2,5.7,3.5,6l6,6l-6,6c-0.7,0.7-0.7,1.8,0,2.5C3.9,20.8,4.3,21,4.8,21 s0.9-0.2,1.2-0.5l6-6l6,6c0.3,0.3,0.8,0.5,1.2,0.5s0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.8,0-2.5L14.5,12z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="ib-header-separater"></div>
+                        </div>
+                        <div class="ib-modal-body ib-modal-body-styl">
+                            <div class="ib-modal-body-main-container ib-modal-body-main-vertical-scroll ib-modal-body-main-container-styl ib-modal-body-main-container-styl-ie-not">
+                                <div class="ib-modal-body-element-section">
+                                    <div class="ib-options-group">
+                                        <div class="option-label-details ib-come-from-row mb-3">
+                                            <div class="option-ld-right">
+                                                <div class="option-ld-right-content">
+                                                    <div class="option-right-content-holder">
+                                                        <div class="ib-come-from-name">
+                                                            <p class="ib-come-from-name-label">
+                                                                <span class="ib-label-txt">Suggest us any idea which can help to grow your business!</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="option-label-details ib-come-from-row">
+                                            <div class="option-ld-left option-label-width">
+                                                <div class="label-container">
+                                                    <label class="label-tag">Idea / Feedback from</label>
+                                                </div>
+                                            </div>
+                                            <div class="option-ld-right">
+                                                <div class="option-ld-right-content">
+                                                    <div class="option-right-content-holder">
+                                                        <div class="ib-come-from-name">
+                                                            <p class="ib-come-from-name-label" id="arn_number"></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="option-label-details ib-come-from-row">
+                                            <div class="option-ld-left option-label-width">
+                                                <div class="label-container">
+                                                    <label class="label-tag">Idea Related with</label>
+                                                </div>
+                                            </div>
+                                            <div class="option-ld-right">
+                                                <div class="option-ld-right-content">
+                                                    <div class="relation-to-selection-holder related-type-selection">
+                                                        <select class="ib-related-with-options ib-related-target" name="relatedIdea" id="relatedIdea">
+                                                            <option value="Business Development">Business Development</option>
+                                                            <option value="Invesor Service">Invesor Service</option>
+                                                            <option value="Others">Others</option>
+                                                        </select>
+                                                        <label class="selection-option-down-arrow">
+                                                            <svg class="selection-down-arrow" focusable="false" viewBox="0 0 24 24">
+                                                            <path d="M3.5,8.9c0-0.4,0.1-0.7,0.4-1C4.5,7.3,5.4,7.2,6,7.8l5.8,5.2l6.1-5.2C18.5,7.3,19.5,7.3,20,8c0.6,0.6,0.5,1.5-0.1,2.1 l-7.1,6.1c-0.6,0.5-1.4,0.5-2,0L4,10.1C3.6,9.8,3.5,9.4,3.5,8.9z"></path>
+                                                            </svg>
+                                                        </label>
+                                                    </div>
+                                                    <span class="ib-related-option-cross ib-related-option-cross-style ib-visibility-off">
+                                                        <svg class="ib-common-cross-icon" focusable="false" viewBox="0 0 24 24">
+                                                        <path d="M14.5,12l6-6C20.8,5.7,21,5.2,21,4.8s-0.2-0.9-0.5-1.2C20.1,3.2,19.7,3,19.2,3S18.3,3.2,18,3.5l-6,6l-6-6 C5.7,3.2,5.2,3,4.8,3S3.9,3.2,3.5,3.5C3.2,3.9,3,4.3,3,4.8S3.2,5.7,3.5,6l6,6l-6,6c-0.7,0.7-0.7,1.8,0,2.5C3.9,20.8,4.3,21,4.8,21 s0.9-0.2,1.2-0.5l6-6l6,6c0.3,0.3,0.8,0.5,1.2,0.5s0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.8,0-2.5L14.5,12z"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="option-label-details ib-come-from-row">
+                                            <div class="option-ld-left option-label-width">
+                                                <div class="label-container">
+                                                    <label class="label-tag">Due Date</label>
+                                                </div>
+                                            </div>
+                                            <div class="option-ld-right">
+                                                <div class="option-ld-right-content">
+                                                    <div class="due-date-seletor-container">
+                                                        <div class="celander-icon-holder">
+                                                            <svg class="ib-celander-icon" focusable="false" viewBox="0 0 32 32">
+                                                            <path d="M24,2V1c0-0.6-0.4-1-1-1s-1,0.4-1,1v1H10V1c0-0.6-0.4-1-1-1S8,0.4,8,1v1C4.7,2,2,4.7,2,8v16c0,3.3,2.7,6,6,6h16c3.3,0,6-2.7,6-6V8C30,4.7,27.3,2,24,2z M8,4v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4h12v1c0,0.6,0.4,1,1,1s1-0.4,1-1V4c2.2,0,4,1.8,4,4v2H4V8C4,5.8,5.8,4,8,4z M24,28H8c-2.2,0-4-1.8-4-4V12h24v12C28,26.2,26.2,28,24,28z"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="due-date-viewer">
+                                                            <span id="date_arrived"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="option-label-details ib-come-from-row flex-column">
+                                            <div class="option-ld-left">
+                                                <div class="label-container">
+                                                    <label class="label-tag remove-width">Describe your idea in one line!</label>
+                                                </div>
+                                            </div>
+                                            <div class="option-ld-right">
+                                                <div class="option-ld-right-content">
+                                                    <div class="ib-task-description-area">
+                                                        <div id="textEditor3" id-data="3" class="text-editor-2 text-editor-remove-style text-editor-2-active">
+                                                            <div class="text-editable-area" tabindex="0" contenteditable="true" id="smallDetail"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="option-label-details ib-come-from-row flex-column">
+                                            <div class="option-ld-left">
+                                                <div class="label-container">
+                                                    <label class="label-tag remove-width">Details of Idea!</label>
+                                                </div>
+                                            </div>
+                                            <div class="option-ld-right">
+                                                <div class="option-ld-right-content">
+                                                    <div class="ib-task-description-area">
+                                                        <div id="textEditor4" id-data="4" class="text-editor-2 text-editor-remove-style text-editor-2-max-height text-editor-2-active">
+                                                            <div class="text-editable-area" tabindex="0" contenteditable="true" id="idea_breif"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="option-label-details ib-option-row ib-categories-group">
+                                            <div class="option-label-col">
+                                                <div class="option-ld-right-content">
+                                                    <div class="ib-task-description-area ib-category-options">
+                                                        <label class="label-tag ib-search-label">Macro Section</label>
+                                                        <select class="ib-search-field ib-acc-dec-select-option" onchange="getMicro()" id="macro_drop">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="option-label-col">
+                                                <div class="option-ld-right-content">
+                                                    <div class="ib-task-description-area ib-category-options">
+                                                        <label class="label-tag ib-search-label">Micro Section</label>
+                                                        <select class="ib-search-field ib-acc-dec-select-option" onchange="update_micro()" id="micro_drop">
+                                                            <option value="null">Select Micro</option>
+                                                        </select>
+                                                        <input type="hidden" value="" id="ideaId" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="option-label-col">
+                                                <div class="option-ld-right-content">
+                                                    <div class="ib-task-description-area ib-category-options">
+                                                        <!-- <label class="label-tag ib-search-label">&nbsp;</label>
+                                                        <select class="ib-search-field ib-acc-dec-select-option" id="acceptStat">
+                                                            <option value="0"> Approve or Decline </option>
+                                                            <option value="1">Accept</option>
+                                                            <option value="2">Decline</option>
+                                                        </select> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="option-label-details ib-option-row ib-categories-group">
+                                            <div class="option-label-col">
+                                                <div class="option-ld-right-content">
+                                                    <div class="ib-task-description-area ib-category-options">
+                                                        <label class="label-tag ib-search-label">Priority Level</label>
+                                                        <select class="ib-search-field ib-acc-dec-select-option" onchange="update_priority()" id="priorityLvl">
+                                                            <option value="null">Select Priority</option>
+                                                            <option value="low">Low</option>
+                                                            <option value="medium">Medium</option>
+                                                            <option value="high">High</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="option-label-col">
+                                                <div class="option-ld-right-content">
+                                                    <div class="ib-task-description-area ib-category-options">
+                                                        <label class="label-tag ib-search-label">Sales Importance</label>
+                                                        <select class="ib-search-field ib-acc-dec-select-option" onchange="update_sales()" id="sales_imp">
+                                                            <option value="null">Select Priority</option>
+                                                            <option value="low">Low</option>
+                                                            <option value="medium">Medium</option>
+                                                            <option value="high">High</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="option-label-col">
+                                                <div class="option-ld-right-content">
+                                                    <div class="ib-task-description-area ib-category-options">
+                                                        <label class="label-tag ib-search-label">Client Benefit</label>
+                                                        <div class="ib-category-options-append">
+                                                            <input class="ib-search-field active-deactive-clss text-right" min="1" max="100" id="client_beni" type="number" value="0" />
+                                                            <div class="ib-percent-icon">%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="option-label-col">
+                                                <div class="option-ld-right-content">
+                                                    <div class="ib-task-description-area ib-category-options">
+                                                        <label class="label-tag ib-search-label">Time Duration</label>
+                                                        <input class="ib-search-field active-deactive-clss text-right" id="time_duration" type="number" placeholder="In hrs" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Merge idea modal -->
+    <div class="modal merge-ideas-modal fade" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered merge-idea-items" role="document">
+            <div class="modal-content ib-modal-content">
+                <div class="ib-mm-container">
+                    <div class="ib-mm-inner-container">
+                        <div class="ib-modal-header ib-modal-header-shadow">
+                            <div class="ib-header-toolbar ib-header-toolbar-spreadsheet">
+                                <div class="ib-header-title">
+                                    <div class="ib-header-title-row">
+                                        <div class="ib-header-title-row-status ib-visibility-off d-none">
+                                            <svg class="circle-check-icon circle-check-icon-small circle-check-icon-small-task-completion-icon circle-check-icon-small-incompleted" focusable="false" viewBox="0 0 32 32"><!-- circle-check-icon-small-completed  -->
+                                            <path d="M31,16c0,8.3-6.7,15-15,15S1,24.3,1,16S7.7,1,16,1S31,7.7,31,16z" class="compound-icon-outer"></path>
+                                            <path d="M13.4,22.1c-0.3,0-0.5-0.1-0.7-0.3l-3.9-3.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l3.1,3.1l8.1-8.1c0.4-0.4,1-0.4,1.4,0   s0.4,1,0,1.4l-8.9,8.9C13.9,22,13.7,22.1,13.4,22.1z" class="compound-icon-inner"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="ib-header-title-row-text">Merge Selected ideas</div>
+                                    </div>
+                                </div>
+                                <span class="ib-modal-closer ib-modal-closer-style" data-dismiss="modal" aria-label="Close">
+                                    <svg class="ib-modal-closer-icon" focusable="false" viewBox="0 0 24 24">
+                                    <path d="M14.5,12l6-6C20.8,5.7,21,5.2,21,4.8s-0.2-0.9-0.5-1.2C20.1,3.2,19.7,3,19.2,3S18.3,3.2,18,3.5l-6,6l-6-6 C5.7,3.2,5.2,3,4.8,3S3.9,3.2,3.5,3.5C3.2,3.9,3,4.3,3,4.8S3.2,5.7,3.5,6l6,6l-6,6c-0.7,0.7-0.7,1.8,0,2.5C3.9,20.8,4.3,21,4.8,21 s0.9-0.2,1.2-0.5l6-6l6,6c0.3,0.3,0.8,0.5,1.2,0.5s0.9-0.2,1.2-0.5c0.7-0.7,0.7-1.8,0-2.5L14.5,12z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="ib-header-separater"></div>
+                        </div>
+                        <div class="ib-modal-body ib-modal-body-styl">
+                            <div class="ib-modal-body-main-container ib-modal-body-main-vertical-scroll ib-modal-body-main-container-styl ib-modal-body-main-container-styl-ie-not">
+                                <div class="ib-modal-body-element-section">
+                                    <div class="ib-options-group">
+                                        <div class="option-label-details ib-come-from-row mb-3">
+                                            <div class="option-ld-right">
+                                                <div class="option-ld-right-content">
+                                                    <div class="option-right-content-holder">
+                                                        <div class="ib-come-from-name">
+                                                            <p class="ib-come-from-name-label">
+                                                                <span class="ib-label-txt">Make anyone idea as a parent idea by clicking on Parent button.</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="option-label-details ib-come-from-row">
+                                            <div class="option-ld-left option-label-width">
+                                                <div class="label-container">
+                                                    <label class="label-tag">Assign Idea</label>
+                                                </div>
+                                            </div>
+                                            <div class="option-ld-right">
+                                                <div class="option-ld-right-content">
+                                                    <div class="option-right-content-holder">
+                                                        <div class="ib-come-from-name">
+                                                            <select class="player-select form-control" id="stageId" style="width: 200px;">
+                                                                <option value="null"> Search Stage/Employee Name </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="option-label-details ib-come-from-row ib-task-pane-subtasks-container">
+                                            <div class="ib-task-pane-subtasks-label">
+                                                <div class="ib-task-pane-left ib-text-left">
+                                                    <div class="ib-task-pane-left-label-container">
+                                                        <label class="ib-task-pane-left-label">Selected ideas</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ib-task-pane-subtasks-group all-idea">
+                                                
+                                            </div>
+                                            <p class="err-text text-danger" id="err" style="font-size: 13px;"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        var globArr = {}
+        var childSuggestion = {}
+        var tickedArray = {}
+
+        $(document).ready(function() {
+            getDrop();
+            getData();
+            getInitial();
+         
+            $(".player-select").select2({
+                ajax: {
+                    method: "POST",
+                    url: "/idea/get_suggestion",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) { return { term : params.term, condition : "3"  } },
+                    processResults: function(data) {
+                        const items = data.data;
+                        return {
+                            results: $.map(items, function(item) {
+                                return {
+                                    text: item.stage_name,
+                                    id: item._id
+                                }
+                            })
+                        };
+                    },
+                },
+                minimumInputLength: 1,
+            });
+
+        });
+
+        async function getData() {
+            const method = "POST";
+            const data = {}
+            const url = "idea/get_other_stage";
+            const call = await ajaxCall(url, data, method);
+            const html = call.data
+            $("#other_stages").html(html);
+            ini()
+        }
+
+        async function getInitial() {
+            const method = "POST";
+            const data = {}
+            const url = "idea/get_initial_stage";
+            const call = await ajaxCall(url, data, method);
+            const html = call.data
+            $("#initial_stages").html(html);
+            ini()
+        }
+
+        $("#smallDetail").blur(() => {
+            const idea_id = $("#ideaId").val();
+            const data = $("#smallDetail").html();
+            update_idea(data, '0');
+            $(`#descid${idea_id}`).html(data)
+        });
+
+        $("#idea_breif").blur(() => {
+            const data = $("#idea_breif").html();
+            update_idea(data, '1');
+        });
+        
+        $("#client_beni").blur(() => {
+            const data = $("#client_beni").val();
+            update_idea(data, '6');
+        });
+
+        $("#time_duration").blur(() => {
+            const data = $("#time_duration").html();
+            update_idea(data, '7');
+        });
+
+        function update_micro() {
+            const data = $("#micro_drop").val();
+            update_idea(data, '3');
+        }
+
+        function update_priority() {
+            const data = $("#priorityLvl").val();
+            update_idea(data, '4')
+        }
+
+        function update_sales() {
+            const data = $("#sales_imp").val();
+            update_idea(data, '5')
+        }
+        
+        function acceptDec(statusParam) {
+            update_idea(statusParam, 'default');
+        }
+
+        async function update_idea(data, case_stat) {
+            const idea_id = $("#ideaId").val();
+            const method = "POST";
+            const data_json = {
+                update_data: data,
+                case_stat: case_stat,
+                _id: idea_id
+            }
+            const url = "/idea/update_raw_idea";
+            const call = await ajaxCall(url, data_json, method);
+
+            if(case_stat == 'default'){
+
+                if(data == 0){
+                    return $(`#cardID${idea_id}`).remove();
+                }
+                const { description, created_on, _id } =  call.data;
+                const stage_id = call.stage._id;
+
+                // const divHtml = `<div class="text-row ib-bc-sl-sic droppablesSelector ui-sortable-handle" onclick="rawModal('${_id}')" id="cardID${_id}" data-last-stage="" data-idea-id="${_id}" data-stage-id="${stage_id}" data-target=".common-modal" data-toggle="modal">
+                //     <div class="ib-sortable-item">
+                //         <div class="ib-sort-item-cont">
+                //             <div class="ib-base-card">
+                //                 <div class="ib-base-card-layout">
+                //                     <div class="ib-base-card-layout-content">
+                //                         <!-- <div class="ib-base-card-layout-img">
+                //                             <img class="img-fluid" src="https://cimsec.org/wp-content/uploads/2016/06/r0Eh9Aw.png" />
+                //                         </div> -->
+                //                         <div class="ib-base-card-layout-title" data-stat-id="mohit">
+                //                             <span class="ib-base-card-layout-title--indented n-indented">
+                //                                         <div class="ib-card-selection" data-toggle="tooltip" data-placement="top" title="Select to merge idea">
+                //                                         <svg class="svg-icon ib-check-icon" focusable="false" viewBox="0 0 512 512">
+                //                                             <g transform="translate(0,512) scale(0.100000,-0.100000)" stroke="none">
+                //                                                 <path d="M2330 5110 c-494 -48 -950 -230 -1350 -538 -195 -150 -448 -432 -594 -662 -63 -99 -186 -351 -230 -471 -49 -134 -102 -340 -128 -499 -31 -195 -31 -565 0 -760 45 -276 116 -498 237 -745 132 -269 269 -460 489 -681 221 -220 412 -357 681 -489 247 -121 469 -192 745 -237 195 -31 565 -31 760 0 276 45 498 116 745 237 269 132 460 269 681 489 220 221 357 412 489 681 88 179 132 296 180 476 63 240 78 371 78 649 0 278 -15 409 -78 649 -48 180 -92 297 -180 476 -132 269 -269 460 -489 681 -221 220 -412 357 -681 489 -246 121 -474 193 -740 235 -147 23 -475 34 -615 20z m539 -426 c458 -67 874 -277 1206 -609 283 -284 472 -615 570 -1004 81 -321 81 -701 0 -1022 -98 -389 -287 -720 -570 -1004 -334 -334 -742 -540 -1215 -611 -156 -24 -444 -24 -600 0 -474 72 -880 277 -1217 613 -331 332 -538 742 -609 1213 -24 156 -24 444 0 600 71 473 277 881 611 1215 370 370 840 586 1370 629 91 7 345 -4 454 -20z"></path>
+                //                                                 <path d="M3495 3433 c-82 -18 -89 -24 -702 -636 l-613 -611 -227 226 c-233 232 -279 267 -348 268 -125 0 -230 -119 -210 -239 4 -22 19 -59 35 -83 16 -24 165 -179 332 -344 286 -285 306 -303 358 -318 63 -19 108 -14 165 19 52 31 1398 1379 1421 1425 27 52 24 135 -6 190 -38 68 -137 118 -205 103z"></path>
+                //                                             </g>
+                //                                         </svg>
+                //                                     </div>
+                //                                 <span class="ib-base-card-task-name ib-fs-12" id="descid${_id}">
+                //                                     ${description}
+                //                                 </span>
+                //                             </span>
+                //                             <div class="ib-base-card-layout-complete-show d-none">
+                //                                 <div class="ib-base-card-layout-complete-task-row-complete-status">
+                //                                     <svg class="circle-check-icon-small circle-check-icon" focusable="false" viewBox="0 0 32 32">
+                //                                         <path d="M31,16c0,8.3-6.7,15-15,15S1,24.3,1,16S7.7,1,16,1S31,7.7,31,16z" class=""></path>
+                //                                         <path d="M13.4,22.1c-0.3,0-0.5-0.1-0.7-0.3l-3.9-3.9c-0.4-0.4-0.4-1,0-1.4s1-0.4,1.4,0l3.1,3.1l8.1-8.1c0.4-0.4,1-0.4,1.4,0   s0.4,1,0,1.4l-8.9,8.9C13.9,22,13.7,22.1,13.4,22.1z" class=""></path>
+                //                                     </svg>
+                //                                 </div>
+                //                             </div>
+                //                         </div>
+                //                         <div class="ib-bcl-cpt"></div>
+                //                         <div class="ib-bcl-action-options">
+                //                             <div class="ib-bcl-idea-date">
+                //                                 <span class="cmmt-count-and-icon ib-common-gray"> ${created_on} </span>
+                //                             </div>
+                //                             <div class="ib-bcl-asign-handle ib-visibility-off">
+                //                                 <div class="user-avatar asign-user-avatar">
+                //                                     <div class="avatar-img avatar-img-wh"></div>
+                //                                 </div>
+                //                             </div>
+                //                             <div class="ib-bcl-cmmt-action-btn ib-visibility-off">
+                //                                 <span class="cmmt-count-and-icon cmmt-ci-gray">
+                //                                     3
+                //                                     <svg class="cmmt-icon ib-ml-4" focusable="false" viewBox="0 0 24 24">
+                //                                     <path d="M4.2,24.1c-0.2,0-0.3,0-0.5-0.1c-0.3-0.2-0.5-0.5-0.5-0.9v-5.2C1.1,16.1,0,13.7,0,11c0-5,4-9,9-9h6c5,0,9,4,9,9 c0,5-4,9-9,9h-4.1l-6.3,3.9C4.5,24,4.3,24.1,4.2,24.1z M9,4c-3.9,0-7,3.1-7,7c0,2.2,1,4.2,2.8,5.6C5,16.8,5.2,17,5.2,17.4v3.9 l5-3.1c0.2-0.1,0.3-0.2,0.5-0.2H15c3.9,0,7-3.1,7-7c0-3.9-3.1-7-7-7H9z"></path>
+                //                                     </svg>
+                //                                 </span>
+                //                             </div>
+                //                         </div>
+                //                     </div>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //     </div>
+                // </div>`
+                $('.add-new-idea-modal').modal('toggle');
+                $(`#cardID${idea_id}`).remove();
+                getInitial();
+                // $(`#div${stage_id}`).prepend(divHtml)
+            }
+        }
+
+        function ini() {
+            $('div[class^="sort"]').sortable({
+                connectWith: ".sortable",
+                receive: function(e, ui) {
+                    const status_id = $(ui.item).parent(".sortable").data("status-id");
+                    const idea_id = $(ui.item).data("idea-id");
+                    let stage_id = $(ui.item).data("stage-id");
+                    let next_stage_id = $(ui.item).parent(".sortable").data("current-id");
+                    let last_satge = $(ui.item).data("last-stage");
+
+                    if (last_satge != '') {
+                        stage_id = last_satge;
+                        last_satge = next_stage_id
+                    } else {
+                        last_satge = next_stage_id
+                    }
+                    const data_json = {
+                        status_id: status_id,
+                        idea_id: idea_id,
+                        stage_id: stage_id,
+                        next_stage_id: next_stage_id
+                    };
+
+                    const method = "POST";
+                    const url = "/idea/update_drag";
+                    const call = ajaxCall(url, data_json, method);
+                    $(ui.item).data('last-stage', last_satge);
+                }
+            }).disableSelection();
+
+            $(".nc-scrollbar").on("scroll", async function() {
+                let div = $(this).get(0);
+                if (div.scrollTop === (div.scrollHeight - div.offsetHeight)) {
+                    const skip_value = $(this).parent().find(".nc-skip-value").val();
+                    const div_id = $(this).parent().find(".nc-div-id").val();
+                    $(this).parent().find(".nc-skip-value").val(parseInt(skip_value) + 5);
+                    
+                    let data = '';
+                    let url = '';
+
+                    switch (div_id) {
+                        case "raw_idea":
+                            url = "/idea/raw_idea_next";
+                            data = {
+                                skipNumber: skip_value,
+                                id : 0
+                            }
+                            break;
+                        case "final_idea":
+                            url = "/idea/raw_idea_next";
+                            data = {
+                                skipNumber: skip_value,
+                                id : 1
+                            }
+                            break;
+                        default:
+                            url = "/idea/other_stage_next";
+                            data = {
+                                skipNumber: skip_value,
+                                stage_id: div_id.replace('div', '')
+                            };
+                            break;
+                    }
+                    const method = "POST";
+                    const call = await ajaxCall(url, data, method);
+                    
+                    return $(`#${div_id}`).append(call.data);
+                }
+            });
+        }
+
+        function getSuggestion(id, type) {
+
+            $(`#${id}`).autocomplete({
+                source: async function(req, res) {
+                    let result = [];
+                    if (type == 1) {
+                        req.condition = type;
+                        const url = "/idea/get_suggestion";
+                        const data = req;
+                        const method = "POST";
+                        const ajax = await ajaxCall(url, data, method);
+                        const dataBack = ajax.data;
+                        dataBack.forEach(function(e) {
+                            let obj = {
+                                id: e._id,
+                                label: e.macro_section_name
+                            };
+                            result.push(obj);
+                        });
+                        childSuggestion = dataBack;
+                    } 
+                    else if(type == 3) {
+                        childSuggestion.forEach(function(e) {
+                            let obj = {
+                                id: e._id,
+                                label: e.name
+                            };
+                            result.push(obj);
+                        });
+                    }
+                    else{
+                        req.condition = type;
+                        const url = "/idea/get_suggestion";
+                        const data = req;
+                        const method = "POST";
+                        const ajax = await ajaxCall(url, data, method);
+                        const dataBack = ajax.data;
+
+                        dataBack.forEach(function(e) {
+                            let obj = {
+                                id: e._id,
+                                label: e. username
+                            };
+                            result.push(obj);
+                        });
+                    }
+                    res(result);
+                },
+                minLength: 1,
+                autoFocus: true,
+                select: function(event, ui) {
+                    if (ui.item) {
+                        const search_value = ui.item.label;
+                        $(`#${id}`).val(search_value);
+                        if (type == 1) {
+                            const suggestion_new = childSuggestion.filter((hero) => {
+                                return hero.macro_section_name == search_value;
+                            });
+                            childSuggestion = suggestion_new[0].micro_section_name;
+                        } else if(type == 3) {
+                            const macro_v = $("#macroSuggestion").val();
+                            const data = {
+                                macro_v: macro_v,
+                                micro_v: search_value
+                            };
+                            getRelatedIdea(data, stageId)
+                        }
+                    }
+                }
+            });
+        }
+
+        async function getRelatedIdea(ideaTag, stageId) {
+            const url = "/idea/getRelatedIdeas";
+            const method = "POST";
+            const ajax = await ajaxCall(url, ideaTag, method);
+            const data = ajax.data;
+            if (data != "") {
+                $("#final_idea").html(ajax.data);
+            } else {
+                toastr.success('No Data Found, try changing filter', 'Idea Bank');
+                $("#macroSuggestion").val('');
+                $("#microSuggestion").val('');
+                getInitial()
+            }
+        }
+
+        async function rawModal(idea_id) {
+            const method = "POST";
+            const data_json = {
+                idea_id: idea_id,
+                condition : "1"
+            }
+            const url = "/idea/get_idea";
+            const call = await ajaxCall(url, data_json, method);
+            const {
+                arn_id,
+                created_on,
+                description,
+                macro_Section_name = 'null',
+                micro_section_name = 'null',
+                priority_level = 'null',
+                sales_importance = 'null',
+                time_duration = 0,
+                deskType,
+                detail,
+                idea_relation,
+                client_benefit = 0,
+                _id
+            } = call.data;
+
+            const values = globArr[macro_Section_name];
+
+            if(values){
+                let html = '<option value="null">Select Micro</option>';
+                values.forEach(element => {
+                    let { name, _id } = element;
+                    html += `<option value="${name}"> ${ name } </option>`;
+                });
+
+                $("#micro_drop").html(html);
+            }
+
+            $("#arn_number").html(`<span class="ib-label-no">${arn_id}</span><span> || </span><span class="ib-label-txt">${deskType}</span>`);
+            $("#ideaId").val(_id);
+            $("#relatedIdea").val(idea_relation);
+            $("#date_arrived").html(created_on);
+            $("#smallDetail").html(description);
+            $("#idea_breif").html(detail);
+            $("#macro_drop").val(macro_Section_name);
+            $("#micro_drop").val(micro_section_name)
+            $("#priorityLvl").val(priority_level);
+            $("#sales_imp").val(sales_importance);
+            $("#time_duration").val(time_duration);
+            $("#client_beni").val(client_benefit);
+        }
+
+        function getMicro() {
+            const str = $("#macro_drop").val();
+            const values = globArr[str];
+            update_idea(str, '2');
+            if (Object.keys(values).length == 0) {
+                return $("#micro_drop").html('<option value="null"> No Micro Section Available </option>');
+            } else {
+                let html = '<option value="null">Select Micro</option>';
+                values.forEach(element => {
+                    let {
+                        name,
+                        _id
+                    } = element;
+                    html += `<option value="${name}"> ${ name } </option>`;
+                });
+                return $("#micro_drop").html(html);
+            }
+        }
+
+        async function getDrop() {
+            const method = "GET";
+            const data = {}
+            const url = "/idea/get_macro";
+            const call = await ajaxCall(url, data, method);
+            const html = call.data;
+            globArr = call.data_arr;
+            return $("#macro_drop").html(html);
+        }
+
+        async function remove_idea(id, status) {
+            const method = "POST";
+            const data = {
+                idea_id: id,
+                option: status
+            }
+            const url = "/idea/delete_idea";
+            const call = await ajaxCall(url, data, method);
+            $(`#cardID${id}`).remove();
+        }
+
+        $(document).on("click", ".ib-card-selection", function (e) {
+            if ($(this).children("svg").hasClass("ib-card-selected") == true) {
+                $(this).children("svg").removeClass("ib-card-selected");
+                const check = $(this).closest(".droppablesSelector").data("idea-id");
+                const title = $(`#descid${check}`).html();
+                delete tickedArray[check] ;
+            } else {
+                $(this).children("svg").addClass("ib-card-selected");
+                const check = $(this).closest(".droppablesSelector").data("idea-id");
+                const title = $(`#descid${check}`).html();
+                tickedArray[check] = { title : title , id : check }
+            }
+
+            if (document.querySelectorAll('.ib-bc-sl-card-container .ib-card-selected').length >= 2) {
+                $(".ib-cards-option").addClass("show");
+            } else {
+                $(".ib-cards-option").removeClass("show");
+            }
+
+            e.preventDefault();
+            e.stopPropagation()
+        });
+
+        $(document).on("click", ".filter-trigger-btn", function () {
+            $(this).addClass("isActive");
+            if ($("#ibBoardColumnHeaderFilterOption").hasClass("show")) {
+                $("#ibBoardColumnHeaderFilterOption").removeClass("show");
+            } else {
+                $("#ibBoardColumnHeaderFilterOption").addClass("show");
+            }
+        });
+
+        $(document).on("click", "span[role=button]", function () {
+            $(this).addClass($(this).attr("tag-data"));
+        });
+
+        $(document).on("click", ".ib-select-idea", function () {
+            $(".ib-new-idea-item-row").removeClass("ib-this-selected");
+            $(".make-idea-parent").removeClass("applied");
+            $(this).find(".ib-new-idea-item-row").addClass("ib-this-selected");
+            $(this).find(".make-idea-parent").addClass($(this).find(".make-idea-parent").attr("tag-data"));
+        });
+
+        $(document).on("click",".mergeFinal", async function(e){
+            $("#err").html(" ")
+            const findSelectedIdea = $(".ib-select-idea").find(".ib-this-selected");
+            const parentIdeaId = findSelectedIdea.attr("id");
+            const title = findSelectedIdea.data("idea-title");
+            const allMergeIdea = tickedArray;
+            if(parentIdeaId == undefined){
+                return $("#err").html('Select any idea as Primary Idea, then start merging')
+            }
+            const stage_id = $("#stageId").val();
+            const data = { primary_taskId : parentIdeaId, secondry_taskIds : allMergeIdea, idea_stage: stage_id, title : title }
+            const method = "POST";
+            const url = "/idea/merge_idea";
+            const call = await ajaxCall(url, data, method);
+            $.each(tickedArray,  (key, e)=>{
+                $(`#cardID${key}`).remove();
+            });
+            getData();
+            $(".merge-ideas-modal").modal('toggle');
+            $(".ib-cards-option").removeClass("show");
+            tickedArray = {}
+        });
+
+        function appendMerge(){
+            let html = '';
+            $.each(tickedArray,  (key, e)=>{
+                html += `<div class="ib-idea-merge-list">
+                    <div class="ib-added-new-task-container ib-new-task-merge-item ib-select-idea">
+                        <div class="ib-added-new-task-context">
+                            <div class="ib-new-idea-item-row" id="${key}" data-idea-title="${e.title}">
+                                <div class="ib-added-item-row-column">
+                                    <div class="ib-sub-task-content">
+                                        <div class="ib-sub-task-editable-title taskmerge" >${e.title}</div>
+                                    </div>
+                                    <div class="ib-sub-task-due-date-seletor-container">
+                                        <div class="btn-group merge-btn-group">
+                                            <div class="common-btn-group">
+                                                <span tag-data="applied"  class="ib-btn ib-primary-outline-btn merge-btn make-idea-parent">Parent Idea</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
+            });
+
+            html += `<div class="option-label-details ib-come-from-row"><div class="btn-group d-flex mx-auto pt-2"><div class="common-btn-group"> <span tag-data="applied" class="ib-btn ib-primary-outline-btn merge-btn make-idea-parent mergeFinal">Merge & Assign Idea</span></div></div></div>`
+            $(".all-idea").html(html)
+        }
+
+        async function stageModal(mergeId){
+            $("#primary_stage").removeClass('second-complete')
+            const method = "POST";
+            const data_json = {
+                idea_id : mergeId,
+                condition : "2"
+            }
+            const url = "/idea/get_idea";
+            const call = await ajaxCall(url, data_json, method);
+            $("#data_after").html(call.htmlData)
+            // myFunction43()
+        }
+
+        $(document).on("focus","#commentChnage", function(){
+            if($('.ib-typo-editor-truncate').hasClass('d-none'))
+            {
+                $('.ib-typo-editor-truncate').removeClass('d-none')    
+            }else{
+                $('.ib-typo-editor-truncate').addClass('d-none')
+            }
+            const data = $(".ib-editor").html();
+            if(data == ""){
+                return null
+            }
+            else{
+                $(".ib-editor").html('');
+            }
+        });
+
+        $(document).on("click", ".post-btn", async ()=>{
+            const mergeIdea = $("#mergeId").val();
+            const commentData = $(".ib-editor").html();
+            // console.log(commentData);
+            if(commentData == ""){
+                return null
+            }
+            else{
+                const data = { comment : commentData, merge_id : mergeIdea }
+                const method = "POST";
+                const url = "/idea/post_comment";
+                const call = await ajaxCall(url, data, method);
+                $("#comment_area").append(call.html)
+                $(".ib-editor").html('');
+                $('.ib-typo-editor-truncate').removeClass('d-none');
+            }
+        });
+</script>
